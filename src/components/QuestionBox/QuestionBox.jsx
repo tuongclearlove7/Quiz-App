@@ -3,6 +3,7 @@ import './QuestionBox.css'
 import { Badge } from '@chakra-ui/react'
 import quizContext from '../../context/quizContext'
 import clickAudio from './../../Assets/select-sound.mp3'
+import TotalTestDurationTime from "./TotalTestDurationTime";
 
 // #0b4b06 - bg
 // #53a24db5 - border
@@ -12,11 +13,13 @@ const QuestionBox = (props) => {
 
     const [selectedAns, setSelectedAns] = useState('')
     const context = useContext(quizContext)
-    const { setScore, score, next, setNext, len, answerList, setAnswerList } = context
+    const { setScore, score, next, setNext,
+    len, answerList, setAnswerList, timeLimit,
+    setEndTime, totalTestDurationTime} = context
     const { question, options, category } = props
     //Here options[0] = options array and options[1] = correct answer
-    let i = -1
-    const alphabet = ['A', 'B', 'C', 'D']
+    let i = -1;
+    const alphabet = ['A', 'B', 'C', 'D'];
     // let currentAlpha = ''
 
     const removeClass = () => {
@@ -48,19 +51,24 @@ const QuestionBox = (props) => {
     }
 
     const handleNextQuestion = () => {
+
+
         if (next <= len - 1) {
             checkAnswer(selectedAns)
             setNext(next + 1)
             setSelectedAns('')
         }
+        console.log("run...");
         setAnswerList([...answerList, { 'question': question, 'options': options[0], 'id': `id${next}`, 'category': category, 'myAnswer': selectedAns, 'rightAnswer': options[1] }])
     }
 
     // for reverse timer
-    const [timer, setTimer] = useState(30)
+
+    const [timer, setTimer] = useState(timeLimit);
+
 
     useEffect(() => {
-        let myInterval = setInterval(() => {
+        let timerInterval = setInterval(() => {
             if (timer > 0) {
                 setTimer(timer - 1)
             } else {
@@ -68,9 +76,14 @@ const QuestionBox = (props) => {
             }
         }, 1000)
         return () => {
-            clearInterval(myInterval);
+            clearInterval(timerInterval);
         };
     })
+
+    const submitExam = () => {
+
+        return 'Submit';
+    };
 
 
     return (
@@ -78,7 +91,10 @@ const QuestionBox = (props) => {
             <div className="q-box mx-auto my-5 p-4 text-center">
                 <div className="q-box_head">
                     <div className="q-box_timer">{timer}s</div>
-                    <div className="q-question" dangerouslySetInnerHTML={{ __html: question }}></div>
+                    <div className={"q-box_timer"}>
+                        <TotalTestDurationTime/>
+                    </div>
+                    <div className="q-question" dangerouslySetInnerHTML={{__html: question}}></div>
                 </div>
                 <div className="q-box_body">
                     {
@@ -92,7 +108,9 @@ const QuestionBox = (props) => {
                 </div>
                 <div className="d-flex flex-wrap justify-content-between align-items-center mx-3">
                     <Badge colorScheme='purple'>{category}</Badge>
-                    <button onClick={handleNextQuestion} className="btn btn-primary m-2">{(next >= len - 1) ? 'Submit' : 'Next'}</button>
+                    <button onClick={handleNextQuestion} className="btn btn-primary m-2">
+                        {(next >= len - 1) ? submitExam() : 'Next'}
+                    </button>
                 </div>
             </div>
         </>

@@ -8,8 +8,14 @@ import {
 } from "react-router-dom";
 import About from './pages/About/About';
 import ReviewAnswer from './pages/Review/ReviewAnswer';
+import {useEffect} from "react";
 
 function App() {
+
+
+  useEffect(() => {
+    document.title="Team1StudyWithMe - Exam online platform";
+  }, []);
 
   return (
     <>
@@ -18,6 +24,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route exact path="/" element={<Home />} />
+            <Route exact path="/view/point" element={<Home />} />
             <Route exact path="/about" element={<About />} />
             <Route exact path="/review" element={<ReviewAnswer />} />
           </Routes>

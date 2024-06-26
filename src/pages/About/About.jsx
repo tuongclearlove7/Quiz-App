@@ -1,9 +1,11 @@
 import { Avatar, Box, chakra, Flex, Icon, SimpleGrid, useColorModeValue, } from '@chakra-ui/react';
+import {useEffect, useState} from "react";
+import logo from "../../Assets/logo_team1.png"
 
 const testimonials = [
     {
-        name: 'Hardik Desai',
-        role: 'Fronted Web Developer',
+        name: 'Team1StudyWithMe',
+        role: 'Team Developer',
         content:
             'This quiz web app is built using React JS. It can allow the user to select the criteria for their quiz from a list of options. The user can then proceed to answer the questions in the quiz and their performance will be tracked and shown in the scoreboard. Moreover, the app can be designed to be responsive and user-friendly.',
         avatar:
@@ -14,6 +16,8 @@ const testimonials = [
 
 function TestimonialCard(props) {
     const { name, role, content, avatar } = props;
+
+
     return (
         <Flex
             boxShadow={'lg'}
@@ -54,7 +58,7 @@ function TestimonialCard(props) {
                 textAlign={'left'}
                 justifyContent={'space-between'}>
                 <chakra.p
-                    color={'gray.400'}
+                    color={'black'}
                     fontFamily={'Inter'}
                     fontWeight={'medium'}
                     fontSize={'15px'}
@@ -66,14 +70,14 @@ function TestimonialCard(props) {
                     <chakra.span
                         fontFamily={'Inter'}
                         fontWeight={'medium'}
-                        color={'gray.500'}>
+                        color={'black'}>
                         {' '}
                         - {role}
                     </chakra.span>
                 </chakra.p>
             </Flex>
             <Avatar
-                src={avatar}
+                src={logo}
                 height={'80px'}
                 width={'80px'}
                 alignSelf={'center'}
@@ -84,6 +88,13 @@ function TestimonialCard(props) {
 }
 
 export default function About() {
+
+    const [title, setTitle] = useState('');
+
+    useEffect(() => {
+        setTitle(document.title);
+    }, [document.title]);
+
     return (
         <Flex
             textAlign={'center'}
@@ -105,8 +116,8 @@ export default function About() {
                     fontSize={48}
                     fontFamily={'Work Sans'}
                     fontWeight={'bold'}
-                    color={useColorModeValue('gray.300', 'gray.50')}>
-                    Quiz Web App
+                    color={'black'}>
+                    {title}
                 </chakra.h1>
                 <chakra.h2
                     margin={'auto'}
@@ -114,7 +125,7 @@ export default function About() {
                     fontFamily={'Inter'}
                     fontWeight={'medium'}
                     color={useColorModeValue('gray.500', 'gray.400')}>
-                    Test Your Knowledge with Fun Quizzes on Our Exciting Website!
+                    {/*Test Your Knowledge with Fun Quizzes on Our Exciting Website!*/}
                 </chakra.h2>
             </Box>
             <SimpleGrid

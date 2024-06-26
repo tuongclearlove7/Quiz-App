@@ -11,17 +11,25 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, InfoIcon } from '@chakra-ui/icons';
-import logo from './../../Assets/logo.png';
-import { Link as ReachLink } from 'react-router-dom';
-import { FaHome } from 'react-icons/fa'; // Import the FaHome icon from react-icons/fa
+import logo from './../../Assets/logo_team1.png';
+import { Link } from 'react-router-dom';
+import { FaHome } from 'react-icons/fa';
+import {BiPointer} from "react-icons/bi"; // Import the FaHome icon from react-icons/fa
 
 export default function BetterNavbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const redirect = async ()=>{
+
+    console.log("reload")
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    window.location.reload();
+  }
+
   return (
     <>
       <Box
-        bg={useColorModeValue('#212832', 'gray.900')}
+        bg={useColorModeValue('white', 'gray.900')}
         px={4}
         borderBottom="1px solid"
         borderColor={useColorModeValue('gray.200', 'gray.700')}
@@ -41,7 +49,7 @@ export default function BetterNavbar() {
           <HStack spacing={8} alignItems="center">
             <Avatar size="sm" src={logo} w={10} h={10} />
             <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
-              <ReachLink
+              <Link
                 px={2}
                 py={1}
                 rounded="md"
@@ -50,10 +58,23 @@ export default function BetterNavbar() {
               >
                 <HStack>
                   <FaHome /> {/* Use the FaHome icon */}
-                  <Text fontWeight="bold">Home</Text>
+                  <Link to="/" onClick={redirect} fontWeight="bold">Home</Link>
                 </HStack>
-              </ReachLink>
-              <ReachLink
+              </Link>
+
+              <Link
+                  px={2}
+                  py={1}
+                  rounded="md"
+                  _hover={{ textDecoration: 'none' }}
+                  to="/"
+              >
+                <HStack>
+                  <BiPointer /> {/* Use the FaHome icon */}
+                  <Link to="/view/point" fontWeight="bold">View point</Link>
+                </HStack>
+              </Link>
+              <Link
                 px={2}
                 py={1}
                 rounded="md"
@@ -64,7 +85,7 @@ export default function BetterNavbar() {
                   <InfoIcon />
                   <Text fontWeight="bold">About</Text>
                 </HStack>
-              </ReachLink>
+              </Link>
             </HStack>
           </HStack>
         </Flex>
@@ -72,7 +93,7 @@ export default function BetterNavbar() {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as="nav" spacing={4}>
-              <ReachLink
+              <Link
                 px={2}
                 py={1}
                 rounded="md"
@@ -81,10 +102,10 @@ export default function BetterNavbar() {
               >
                 <HStack>
                   <FaHome /> {/* Use the FaHome icon */}
-                  <Text fontWeight="bold">Home</Text>
+                  <Link to='/' fontWeight="bold">Home</Link>
                 </HStack>
-              </ReachLink>
-              <ReachLink
+              </Link>
+              <Link
                 px={2}
                 py={1}
                 rounded="md"
@@ -95,7 +116,7 @@ export default function BetterNavbar() {
                   <InfoIcon />
                   <Text fontWeight="bold">About</Text>
                 </HStack>
-              </ReachLink>
+              </Link>
             </Stack>
           </Box>
         ) : null}

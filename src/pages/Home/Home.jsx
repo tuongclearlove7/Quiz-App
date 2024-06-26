@@ -1,25 +1,84 @@
-import React, { useContext, useState } from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import Form from '../../components/Form/Form'
 import QuizArea from '../QuizArea/QuizArea'
 import quizContext from '../../context/quizContext'
 import { HashLoader } from 'react-spinners';
 import { Text } from '@chakra-ui/react'
+import logo from "../../Assets/logo_team1.png"
+import styles from "../../Assets/css/styles.module.css"
+import {useNavigate} from "react-router-dom";
+import {getApi} from "../../request/api";
 
 const Home = () => {
-    const context = useContext(quizContext)
-    const { setUrl, url, fetchQuestions, setLoading, loading, questions } = context
-    const [formData, setFormData] = useState({ number: '', category: '', difficulty: '', type: '' })
+
+    const navigate = useNavigate();
+    const context = useContext(quizContext);
+    const [title, setTitle] = useState('');
+    const { setUrl, url, fetchQuestions, setLoading,
+    loading, questions, setUsername, setTimeLimit,
+    setStartTime, setEndTime, setTotalTestDurationTime,
+    setUserId, setType, setDifficulty} = context
+    const [formData, setFormData] = useState({username :'', number: '', category: '', difficulty: '', type: '' , timer : 0})
+    const milliseconds = Date.now();
+    const date = new Date(milliseconds);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    useEffect(() => {
+        getApi("/home").then(
+            res=>{
+
+            }
+        ).catch(
+            err=>{
+                console.error("err ",err);
+            }
+        )
+    }, []);
+
+    const getUserId = () => {
+        return "userId";
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const { number, category, difficulty, type } = formData
-        setUrl(`https://opentdb.com/api.php?amount=${number}&category=${category}&difficulty=${difficulty}&type=${type}`, fetchQuestions(url))
-        setLoading(true)
+        const {username,timer, number, category,
+        difficulty, type } = formData;
+        const userId = localStorage.getItem(getUserId());
+
+        if (!userId) {
+            setUsername(username);
+            setTimeLimit(timer);
+            setStartTime(`${day}-${month}-${year} ${hours}:${minutes}:${seconds}`);
+            setEndTime(`${day}-${month}-${year} ${hours}:${minutes}:${seconds + (number * timer)}`);
+            setTotalTestDurationTime(number * timer);
+            setUserId(getUserId());
+            setType(type);
+            setDifficulty(difficulty);
+
+            // Lưu thời gian bắt đầu vào localStorage
+            localStorage.setItem(getUserId(), Date.now());
+            setUrl(`https://opentdb.com/api.php?amount=${number}&category=${category}&difficulty=${difficulty}&type=${type}`, fetchQuestions(url))
+            setLoading(true)
+        }
+        console.log("block")
+        navigate("/");
+        // window.location.reload();
+
     }
 
     const onChange = (e) => {
+
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
+
+    useEffect(() => {
+        setTitle(document.title);
+    }, [document.title]);
 
     return (
         <>
@@ -36,10 +95,16 @@ const Home = () => {
             {
                 (url === '' || questions.length === 0)
                     ?
-                    <div className="container my-3">
-                        <Text mb={'4'} fontSize='4xl'>Start your Quiz Now</Text>
-                        <hr />
-                        <Form handleSubmit={handleSubmit} onChange={onChange} />
+                    <div className={`container ${styles.marginTop_50px}`}>
+                        <div>
+                            <img width="65px" className={`${styles.floatLeft} ${styles.marginRight_10px}`}
+                                 src={logo ? logo : ''}
+                                 alt={logo ? logo : ''}
+                            />
+                            <Text width="100%" mb={'4'}  fontSize='4xl'>{title}</Text>
+                        </div>
+
+                        <Form style={styles.clearBoth} handleSubmit={handleSubmit} onChange={onChange} />
                     </div>
                     :
                     <QuizArea />
