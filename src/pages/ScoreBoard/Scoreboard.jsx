@@ -14,7 +14,6 @@ const Scoreboard = (props) => {
     const { username, startTime, timeLimit, endTime, userId,
     category, type, difficulty} = context;
     const { total_que, correct_que, wrong_que } = props;
-    let percentage = (correct_que / total_que) * 100;
     let Attempted = (correct_que + wrong_que) / total_que * 100;
     let point = parseFloat(correct_que * (10 / total_que)).toFixed(2);
     let totalTime = parseFloat((timeLimit * total_que) / 60).toFixed(2);

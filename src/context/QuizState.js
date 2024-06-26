@@ -21,6 +21,7 @@ const QuizState = (props) => {
     const [category, setCategory] = useState('');
     const [type, setType] = useState('');
     const [difficulty, setDifficulty] = useState('');
+    const [title, setTitle] = useState('');
 
     const fetchQuestions = async (api) => {
         const response = await fetch(api);
@@ -52,6 +53,7 @@ const QuizState = (props) => {
             setTotalTestDurationTime, totalTestDurationTime,
             setUserId, userId, setCategory, category,
             setType, type, setDifficulty, difficulty,
+            setTitle, title
         }}>
             {props.children}
         </QuizContext.Provider>

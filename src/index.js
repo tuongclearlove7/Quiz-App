@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import { extendTheme, ChakraProvider, CSSReset, ThemeProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import QuizState from "./context/QuizState";
 
 const colors = {
   brand: {
@@ -27,7 +28,9 @@ root.render(
       <ThemeProvider theme={theme}>
         <CSSReset />
         <Router>
-          <App />
+          <QuizState>
+            <App />
+          </QuizState>
         </Router>
       </ThemeProvider>
     </ChakraProvider>

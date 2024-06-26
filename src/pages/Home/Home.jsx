@@ -13,11 +13,10 @@ const Home = () => {
 
     const navigate = useNavigate();
     const context = useContext(quizContext);
-    const [title, setTitle] = useState('');
     const { setUrl, url, fetchQuestions, setLoading,
     loading, questions, setUsername, setTimeLimit,
     setStartTime, setEndTime, setTotalTestDurationTime,
-    setUserId, setType, setDifficulty} = context
+    setUserId, setType, setDifficulty, title} = context
     const [formData, setFormData] = useState({username :'', number: '', category: '', difficulty: '', type: '' , timer : 0})
     const milliseconds = Date.now();
     const date = new Date(milliseconds);
@@ -75,10 +74,6 @@ const Home = () => {
 
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
-
-    useEffect(() => {
-        setTitle(document.title);
-    }, [document.title]);
 
     return (
         <>
